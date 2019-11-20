@@ -15,7 +15,11 @@ class App extends React.Component {
     }
   }
 
-  onChangeType = animalType => {
+  //changes state's type to the currently selected animal type
+    //will be passed down to filter component
+  onChangeType = event => {
+    //debugger;
+    const animalType = event.target.value;
     this.setState({
       filters: {
         ...this.state.filters,
@@ -24,7 +28,8 @@ class App extends React.Component {
     })
   }
 
-  onFindPetsClick = animalType => {
+  
+  onFindPetsClick = () => {
     if (this.state.filters.type === 'all') {
       fetch('/api/pets')
       .then(response => response.json())
@@ -41,11 +46,16 @@ class App extends React.Component {
     }
   }
 
-  onAdoptPet = id => {
-    const pet = this.state.pets.map(pet => {
-      return pet.id === id
-    })
-    return pet[0];
+  onAdoptPet = petId => {
+    const pets = this.state.pets.map(p => {
+      return p.id === petId ? { ...p, isAdopted: true } : p;
+    });
+    this.setState({ pets: pets });
+  };
+
+  filterPets = () => {
+    this.onFindPetsClick();
+    return this.state.pets;
   }
 
   render() {
@@ -60,7 +70,7 @@ class App extends React.Component {
               <Filters onChangeType={this.onChangeType} onFindPetsClick={this.onFindPetsClick} />
             </div>
             <div className="twelve wide column">
-              <PetBrowser onAdoptPet={this.onAdoptPet} />
+              <PetBrowser pets={this.state.pets} onAdoptPet={this.onAdoptPet} />
             </div>
           </div>
         </div>
