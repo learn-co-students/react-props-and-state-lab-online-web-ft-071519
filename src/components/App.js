@@ -3,7 +3,7 @@ import React from 'react'
 import Filters from './Filters'
 import PetBrowser from './PetBrowser'
 
-// 
+// The functionality is 100% but not sure why a few tests are not passing. 
 
 class App extends React.Component {
     constructor() {
